@@ -4,9 +4,11 @@ import * as Yup from 'yup';
 export default {
   store: async (req: Request, res: Response, next: NextFunction) => {
     const schema = Yup.object().shape({
-      to: Yup.string().required('The recipient is required'),
+      to: Yup.array(Yup.string())
+        .min(1, 'You need to send this message to at least one recipient')
+        .required('The recipient field is required'),
       subject: Yup.string().required('The recipient is required'),
-      htmlBody: Yup.string().required('The e-mail body is required'),
+      text: Yup.string().required('The e-mail body is required'),
     });
     try {
       await schema.validate(req.body, { abortEarly: false });
