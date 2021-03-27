@@ -5,16 +5,22 @@ import { mailConfig } from '~/configs';
 const transporter = nodemailer.createTransport(mailConfig);
 
 interface SendMail {
-  to: string[];
+  from: string;
+  to: string | string[];
   subject: string;
   text: string;
 }
 
-const sendMail = async ({ subject, to, text }: SendMail): Promise<void> => {
+const sendMail = async ({
+  from,
+  to,
+  subject,
+  text,
+}: SendMail): Promise<void> => {
   await transporter.sendMail({
-    subject,
-    from: `Daniel Mesquita <${mailConfig.auth?.user}>`,
+    from: `${from} <${mailConfig.auth?.user}>`,
     to,
+    subject,
     text,
   });
 };

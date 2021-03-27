@@ -4,10 +4,14 @@ import * as Yup from 'yup';
 export default {
   store: async (req: Request, res: Response, next: NextFunction) => {
     const schema = Yup.object().shape({
-      to: Yup.array(Yup.string())
-        .min(1, 'You need to send this message to at least one recipient')
-        .required('The recipient field is required'),
-      subject: Yup.string().required('The recipient is required'),
+      from: Yup.string().required('The sender name is required'),
+      to: Yup.lazy((val: string[] | string) =>
+        (Array.isArray(val)
+          ? Yup.array().of(Yup.string())
+          : Yup.string()
+        ).required('The recipient is required')
+      ),
+      subject: Yup.string().required('The subject is required'),
       text: Yup.string().required('The e-mail body is required'),
     });
     try {
