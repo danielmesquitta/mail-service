@@ -10,7 +10,7 @@ dotenv();
 const app = express();
 
 app.use(express.json());
-app.use(cors(process.env.NODE_ENV === 'development' ? {} : corsConfig));
+app.use(cors(corsConfig));
 app.use(routes);
 
 app.listen(process.env.PORT || 3333);
